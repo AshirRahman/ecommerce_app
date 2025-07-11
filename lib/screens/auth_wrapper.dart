@@ -1,23 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
+import '../providers/favorites_provider.dart';
 import 'home_screen.dart';
 import 'login_screen.dart';
 
-class AuthWrapper extends StatelessWidget {
+class AuthWrapper extends StatefulWidget {
   const AuthWrapper({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Get the AuthProvider from the app
-    final authProvider = Provider.of<AuthProvider>(context);
+  State<AuthWrapper> createState() => _AuthWrapperState();
+}
 
-    // If the user is logged in, show the HomeScreen
-    if (authProvider.isLoggedIn) {
-      return const HomeScreen();
+class _AuthWrapperState extends State<AuthWrapper> {
+  bool _didLoadFavorites = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!_didLoadFavorites) {
+      final auth = Provider.of<AuthProvider>(context, listen: false);
+      final favProvider = Provider.of<FavoritesProvider>(context, listen: false);
+
+      // If the user is already logged in (restored session)
+      if (auth.isLoggedIn) {
+        favProvider.loadFavorites(); // Load favorites from Firebase
+      }
+
+      _didLoadFavorites = true;
     }
+  }
 
-    // If not logged in, show the LoginScreen
-    return const LoginScreen();
+  @override
+  Widget build(BuildContext context) {
+    // Get the current authentication status
+    final auth = Provider.of<AuthProvider>(context);
+
+    // Show HomeScreen if logged in, otherwise show LoginScreen
+    if (auth.isLoggedIn) {
+      return const HomeScreen();
+    } else {
+      return const LoginScreen();
+    }
   }
 }
