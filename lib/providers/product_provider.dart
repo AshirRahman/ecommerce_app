@@ -1,37 +1,56 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
-import '../models/dummy_data.dart';
+import '../services/product_service.dart';
 
 class ProductProvider with ChangeNotifier {
-  final List<Product> _allProducts = dummyProducts;
-  List<Product> _filteredProducts = dummyProducts;
+  final List<Product> _allProducts = [];
+  List<Product> _filteredProducts = [];
 
   List<Product> get products => _filteredProducts;
 
-  void search(String query) {
-    if (query.trim().isEmpty) {
-      _filteredProducts = _allProducts;
-    } else {
-      _filteredProducts = _allProducts.where((product) {
-        return product.title.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-    }
-    notifyListeners();
-  }
-
   String _selectedCategory = 'All';
   String get selectedCategory => _selectedCategory;
+  String _searchQuery = '';
 
-  void filterByCategory(String category) {
-    _selectedCategory = category;
-    if (category == 'All') {
-      _filteredProducts = _allProducts;
-    } else {
-      _filteredProducts = _allProducts
-          .where((product) => product.category == category)
-          .toList();
+  // 🔄 Central method to apply filters
+  void _applyFilters() {
+    _filteredProducts = _allProducts.where((product) {
+      final matchesCategory = _selectedCategory == 'All' ||
+          product.category.toLowerCase() == _selectedCategory.toLowerCase();
+
+      final matchesSearch = product.title
+          .toLowerCase()
+          .contains(_searchQuery.toLowerCase());
+
+      return matchesCategory && matchesSearch;
+    }).toList();
+  }
+
+  // 📦 API loader
+  Future<void> loadProducts() async {
+    try {
+      final fetched = await ProductService.fetchProducts();
+      _allProducts.clear();
+      _allProducts.addAll(fetched);
+      _applyFilters(); // 👈 Apply any active filter
+      notifyListeners();
+    } catch (e) {
+      print('Error loading products: $e');
+      rethrow;
     }
+  }
+
+  // 🔍 Search
+  void search(String query) {
+    _searchQuery = query;
+    _applyFilters();
     notifyListeners();
   }
 
+  // 📁 Filter by category
+  void filterByCategory(String category) {
+    _selectedCategory = category;
+    _applyFilters();
+    notifyListeners();
+  }
 }

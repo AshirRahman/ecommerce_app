@@ -1,4 +1,7 @@
+import 'package:ecommerce_app/providers/auth_provider.dart';
+import 'package:ecommerce_app/providers/favorites_provider.dart';
 import 'package:ecommerce_app/providers/product_provider.dart';
+import 'package:ecommerce_app/screens/auth_wrapper.dart';
 import 'package:ecommerce_app/screens/cart_screen.dart';
 import 'package:ecommerce_app/screens/home_screen.dart';
 import 'package:ecommerce_app/screens/product_detail_screen.dart';
@@ -15,6 +18,8 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => Cart()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: MyApp(),
     ),
@@ -51,7 +56,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: HomeScreen(),
+      home: const AuthWrapper(),
     );
   }
 }

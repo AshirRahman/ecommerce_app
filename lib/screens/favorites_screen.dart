@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/product.dart';
 import '../providers/favorites_provider.dart';
+import '../models/dummy_data.dart';
+import '../providers/product_provider.dart';
 import '../screens/product_detail_screen.dart';
 
-class ProductList extends StatelessWidget {
-  final List<Product> products;
-
-  const ProductList({super.key, required this.products});
+class FavoritesScreen extends StatelessWidget {
+  const FavoritesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final favProvider = Provider.of<FavoritesProvider>(context);
+    final allProducts = Provider.of<ProductProvider>(context).products;
+    final favoriteIds = Provider.of<FavoritesProvider>(context).favoriteIds;
 
-    return Expanded(
-      child: products.isEmpty
-          ? const Center(child: Text('No products found'))
+    final favoriteProducts = allProducts
+        .where((product) => favoriteIds.contains(product.id))
+        .toList();
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Favorites')),
+      body: favoriteProducts.isEmpty
+          ? const Center(child: Text('No favorites yet.'))
           : ListView.builder(
-              padding: const EdgeInsets.all(12),
-              itemCount: products.length,
-              itemBuilder: (ctx, index) {
-                final product = products[index];
-                final isFav = favProvider.isFavorite(product.id);
-
+              itemCount: favoriteProducts.length,
+              itemBuilder: (ctx, i) {
+                final product = favoriteProducts[i];
                 return Container(
                   margin: const EdgeInsets.symmetric(
                     horizontal: 8,
@@ -44,7 +46,6 @@ class ProductList extends StatelessWidget {
                       ),
                     ],
                   ),
-
                   child: ListTile(
                     leading: Image.network(
                       product.imageUrl,
@@ -55,22 +56,7 @@ class ProductList extends StatelessWidget {
                     subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            /*If isFav == true:
-                            → color the icon red*/
-                            isFav ? Icons.favorite : Icons.favorite_border,
-                            /*If isFav == false:
-                            → color the icon grey*/
-                            color: isFav ? Colors.red : Colors.grey,
-                          ),
-                          onPressed: () {
-                            favProvider.toggleFavorite(product.id);
-                          },
-                        ),
-                        const Icon(Icons.arrow_forward_ios, size: 16),
-                      ],
+                      children: [const Icon(Icons.arrow_forward_ios, size: 16)],
                     ),
                     onTap: () {
                       Navigator.push(

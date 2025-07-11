@@ -39,7 +39,6 @@ class CategoryChips extends StatelessWidget {
                 selected: isSelected,
                 onSelected: (_) => provider.filterByCategory(cat),
                 selectedColor: Colors.green,
-                backgroundColor: Colors.grey.shade200,
                 showCheckmark: false,
                 labelStyle: TextStyle(
                   color: isSelected ? Colors.white : Colors.black87,
