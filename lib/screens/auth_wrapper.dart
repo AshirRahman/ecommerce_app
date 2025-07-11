@@ -9,17 +9,15 @@ class AuthWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get the auth provider
+    // Get the AuthProvider from the app
     final authProvider = Provider.of<AuthProvider>(context);
 
-    // Check if user is logged in or not
-    final loggedIn = authProvider.isAuthenticated;
-
-    // Show HomeScreen if logged in, else show LoginScreen
-    if (loggedIn) {
+    // If the user is logged in, show the HomeScreen
+    if (authProvider.isLoggedIn) {
       return const HomeScreen();
-    } else {
-      return const LoginScreen();
     }
+
+    // If not logged in, show the LoginScreen
+    return const LoginScreen();
   }
 }

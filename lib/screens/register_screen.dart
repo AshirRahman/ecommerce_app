@@ -38,10 +38,8 @@ class RegisterScreen extends StatelessWidget {
               onPressed: () {
                 if (passwordController.text == confirmController.text) {
                   // For demo, "register" just logs in
-                  Provider.of<AuthProvider>(context, listen: false).login(
-                    emailController.text,
-                    passwordController.text,
-                  );
+                  Provider.of<AuthProvider>(context, listen: false)
+                      .register(emailController.text, passwordController.text, context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(

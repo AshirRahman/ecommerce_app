@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'favorites_provider.dart';
 
 class AuthProvider with ChangeNotifier {
-  bool _isAuthenticated = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  bool get isAuthenticated => _isAuthenticated;
+  User? get currentUser => _auth.currentUser;
 
-  void login(String email, String password) {
-    // Dummy login logic
-    if (email.isNotEmpty && password.isNotEmpty) {
-      _isAuthenticated = true;
-      notifyListeners();
-    }
+  bool get isLoggedIn => _auth.currentUser != null;
+
+  Future<void> login(String email, String password, BuildContext context) async {
+    await _auth.signInWithEmailAndPassword(email: email, password: password);
+    await Provider.of<FavoritesProvider>(context, listen: false).loadFavorites();
+    notifyListeners();
   }
 
-  void logout() {
-    _isAuthenticated = false;
+  Future<void> register(String email, String password, BuildContext context) async {
+    await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    await Provider.of<FavoritesProvider>(context, listen: false).loadFavorites();
+    notifyListeners();
+  }
+
+
+  Future<void> logout() async {
+    await _auth.signOut();
     notifyListeners();
   }
 }

@@ -14,6 +14,7 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Login")),
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           const BackgroundSVG(), // ✅ Background
@@ -35,12 +36,8 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
-                      final email = emailController.text;
-                      final password = passwordController.text;
-                      Provider.of<AuthProvider>(
-                        context,
-                        listen: false,
-                      ).login(email, password);
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .login(emailController.text, passwordController.text, context);
                     },
                     child: const Text(
                       "Login",

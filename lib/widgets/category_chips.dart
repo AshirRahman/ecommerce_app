@@ -24,14 +24,14 @@ class CategoryChips extends StatelessWidget {
             final isSelected = cat == provider.selectedCategory;
             return Container(
               decoration: BoxDecoration(
-                boxShadow: [
+                /*boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.05),
                     blurRadius: 6,
                     spreadRadius: 4,
                     offset: const Offset(0, 3),
                   ),
-                ],
+                ],*/
                 borderRadius: BorderRadius.circular(10),
               ),
               child: ChoiceChip(

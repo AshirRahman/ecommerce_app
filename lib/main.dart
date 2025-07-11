@@ -5,6 +5,7 @@ import 'package:ecommerce_app/screens/auth_wrapper.dart';
 import 'package:ecommerce_app/screens/cart_screen.dart';
 import 'package:ecommerce_app/screens/home_screen.dart';
 import 'package:ecommerce_app/screens/product_detail_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,9 @@ import 'models/cart.dart';
 import 'models/dummy_data.dart';
 import 'models/product.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MultiProvider(
       providers: [

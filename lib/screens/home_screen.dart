@@ -80,8 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-
-
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           const BackgroundSVG(), // ✅ reusable
