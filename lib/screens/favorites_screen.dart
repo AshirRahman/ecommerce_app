@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/favorites_provider.dart';
 import '../providers/product_provider.dart';
 import '../screens/product_detail_screen.dart';
-import '../widgets/background_svg.dart'; 
+import '../widgets/background_svg.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});

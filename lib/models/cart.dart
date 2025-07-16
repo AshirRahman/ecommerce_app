@@ -4,9 +4,7 @@ import 'product.dart';
 
 class Cart with ChangeNotifier {
   final Map<String, CartItem> _items = {};
-
   Map<String, CartItem> get items => {..._items};
-
   int get itemCount => _items.length;
 
   double get totalAmount {
