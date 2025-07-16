@@ -30,7 +30,6 @@ class FavoritesProvider with ChangeNotifier {
   final _auth = FirebaseAuth.instance;
 
   Set<String> _favoriteIds = {};
-
   Set<String> get favoriteIds => _favoriteIds;
 
   bool isFavorite(String productId) => _favoriteIds.contains(productId);

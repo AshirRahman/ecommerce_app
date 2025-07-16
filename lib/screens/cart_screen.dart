@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/cart.dart';
 import '../models/cart_item.dart';
+import '../providers/cart_provider.dart';
 import '../widgets/background_svg.dart';
 import 'checkout_screen.dart';
 
@@ -10,7 +11,7 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context);
+    final cart = Provider.of<CartProvider>(context);
     final cartItems = cart.items.values.toList();
     final cartKeys = cart.items.keys.toList();
 
@@ -61,7 +62,7 @@ class CartItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context, listen: false);
+    final cart = Provider.of<CartProvider>(context, listen: false);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -166,7 +167,7 @@ class CheckoutBar extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Provider.of<Cart>(context, listen: false).clear();
+                Provider.of<CartProvider>(context, listen: false).clear();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const CheckoutScreen()),

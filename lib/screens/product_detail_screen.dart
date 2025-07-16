@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../models/cart.dart';
+import '../providers/cart_provider.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final Product product;
@@ -90,7 +91,7 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                Provider.of<Cart>(context, listen: false).addItem(product);
+                Provider.of<CartProvider>(context, listen: false).addItem(product);
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

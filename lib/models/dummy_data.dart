@@ -1,3 +1,4 @@
+/*
 import 'product.dart';
 
 final List<Product> dummyProducts = [
@@ -26,3 +27,4 @@ final List<Product> dummyProducts = [
     category: 'Shoes',
   ),
 ];
+*/
